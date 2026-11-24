@@ -73,7 +73,28 @@ Local run against the public demo, 2026-11-24 (Windows, Node 26, Playwright 1.65
 - **Contract, authentication, error-body and user-visibility checks:** all 18 passed.
 - **Findings:** all four present.
 
-_Pending: the CI runs (public and Docker, including k6) and the published report._
+CI run [45427115534](https://github.com/rohi-mahajan6/inventree-api-rbac-tests/actions/runs/45427115534), commit `1e8ffaa`, 2026-11-24. All four jobs passed:
+
+| Job | Result |
+| --- | ------ |
+| Public demo (read-only probes) | 94 passed, 0 failed, 3 skipped (the Docker-only token tests); RBAC 72/72; checks 18/18 |
+| Docker 1.7.4 (full matrix + k6) | 217 passed, 0 failed, 0 skipped; RBAC 192/192, including real writes; checks 21/21 |
+| Build matrix report | passed |
+| Deploy report | published to [GitHub Pages](https://rohi-mahajan6.github.io/inventree-api-rbac-tests/) |
+
+- **Findings:** FIND-001 and CONTRACT-001, 002 and 003 were present on both targets. DOC-001 is confirmed by the five steven rows returning 403.
+- **k6 on Docker:** 50 virtual users, reading part lists and part details as reader with a token.
+
+| Requests | Median | p95 | p99 | Max | Failed requests | Checks |
+| -------- | ------ | --- | --- | --- | --------------- | ------ |
+| 1523 (30.0/s) | 896.9 ms | 1540.9 ms | 1826.1 ms | 2172.4 ms | 0.00% | 100.00% |
+
+The k6 thresholds are failed requests below 1% and checks above 99%. There is no latency threshold yet. These numbers come from one shared GitHub runner, so they are a baseline, not a benchmark.
+
+Earlier runs, and what each one fixed:
+
+- [45408444999](https://github.com/rohi-mahajan6/inventree-api-rbac-tests/actions/runs/45408444999): group permissions were not rebuilt after the dataset loaded, and the purchase order reference prefix was wrong.
+- [45411670798](https://github.com/rohi-mahajan6/inventree-api-rbac-tests/actions/runs/45411670798): stock create returns an array, and steven cannot manage users (DOC-001).
 
 ## 7. Run locally
 
