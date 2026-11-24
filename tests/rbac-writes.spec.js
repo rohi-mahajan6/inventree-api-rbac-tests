@@ -41,7 +41,18 @@ async function runWrite(request, row) {
 test.describe('RBAC matrix: Docker-only rows', () => {
   for (const row of rowsFor('docker')) {
     test(`${row.id} ${row.role} ${row.method} ${row.endpoint} [${row.probe}] -> ${row.expected_status}`, async ({ request }, testInfo) => {
-      const res = SAFE_PROBES.includes(row.probe) ? await probe(request, row, 'docker') : await runWrite(request, row);
+      let res;
+      try {
+        res = SAFE_PROBES.includes(row.probe) ? await probe(request, row, 'docker') : await runWrite(request, row);
+      } catch (err) {
+        // A fixture problem still gets a grid cell, marked as an error with the reason.
+        record(testInfo, {
+          kind: 'rbac', id: row.id, role: row.role, resource: resourceOf(row.endpoint), endpoint: row.endpoint,
+          method: row.method, probe: row.probe, expected: row.expected_status, actual: 'error', pass: false,
+          detail: String(err.message).slice(0, 300),
+        });
+        throw err;
+      }
       record(testInfo, {
         kind: 'rbac', id: row.id, role: row.role, resource: resourceOf(row.endpoint), endpoint: row.endpoint,
         method: row.method, probe: row.probe, expected: row.expected_status, actual: res.status,

@@ -147,10 +147,26 @@ jobs:
       - name: Load the demo dataset
         run: docker exec inventree invoke dev.setup-test --ignore-update --branch "$DEMO_DATASET_BRANCH"
 
+      # Group permissions are built from the rule sets when the server starts
+      # (users.apps.UsersConfig.ready -> rebuild_all_permissions). The dataset was loaded after start,
+      # so restart to apply the demo groups' roles. Without this, groups can view but not add/change/delete.
+      - name: Restart InvenTree to rebuild group permissions
+        run: |
+          docker restart inventree
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:8000/api/ >/dev/null 2>&1; then echo "API back after $((i * 5)) s"; exit 0; fi
+            sleep 5
+          done
+          echo "::error::InvenTree did not come back after the restart"
+          docker logs --tail 200 inventree
+          exit 1
+
       - name: Run the full matrix against Docker
         run: npx playwright test --project=docker
 
+      # Runs even when the matrix failed, so the load test always reports.
       - uses: grafana/setup-k6-action@v1
+        if: ${{ !cancelled() }}
 
       - name: Run k6 read scenario
         if: ${{ !cancelled() }}

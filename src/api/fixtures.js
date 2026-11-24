@@ -28,10 +28,17 @@ async function context(request) {
         if (res.status !== 200 || !pk) throw new Error(`fixture lookup ${path} -> HTTP ${res.status}`);
         return pk;
       };
+      // The reference pattern is a server setting (the 1.7.x dataset uses "PO{ref:04d}"): take the
+      // prefix from an existing order instead of assuming one.
+      const po = await asAdmin(request, 'GET', '/api/order/po/?limit=1');
+      const ref = po.body && po.body.results && po.body.results[0] && po.body.results[0].reference;
+      const match = typeof ref === 'string' && ref.match(/^(.*?)(\d+)$/);
+      if (!match) throw new Error(`fixture lookup: cannot derive the purchase order reference prefix from "${ref}" (HTTP ${po.status})`);
       return {
         category: await first('/api/part/category/?limit=1'),
         part: await first('/api/part/?limit=1&active=true&virtual=false'),
         supplier: await first('/api/company/?limit=1&is_supplier=true'),
+        poPrefix: match[1],
       };
     })();
   }
@@ -46,8 +53,8 @@ function createPayload(resource, ctx) {
     case 'stock':
       return { part: ctx.part, quantity: 1, batch: `RBAC-${u}` };
     case 'order/po':
-      // Default reference pattern is "PO-{ref:04d}"; a high number keeps clear of the dataset's orders.
-      return { supplier: ctx.supplier, reference: `PO-${700000 + (Date.now() % 100000) + counter}`, description: `RBAC test order ${u}` };
+      // A high number keeps clear of the dataset's orders.
+      return { supplier: ctx.supplier, reference: `${ctx.poPrefix}${700000 + (Date.now() % 100000) + counter}`, description: `RBAC test order ${u}` };
     case 'user':
       return { username: `rbac_${u}`, first_name: 'Rbac', last_name: 'Test', email: `rbac_${u}@example.com` };
     default:

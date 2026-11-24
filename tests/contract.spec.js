@@ -100,6 +100,10 @@ test.describe('Contract: known deviations from the published schema', () => {
           ? `${seen.length} occurrence(s). Schema: ${d.expected}. Returned: ${examples.join('; ')}`
           : `Not seen in this run. Schema: ${d.expected}. Previously returned: ${d.observed}`,
       });
+      // The deviations were found on the public demo. On Docker 1.7.4 they may not show, either because
+      // of the version or because the data lacks the values (no pricing is calculated without a
+      // background worker). Record that and skip rather than fail; on public the pin stays strict.
+      test.skip(testInfo.project.name === 'docker' && seen.length === 0, `${d.id} not observed on Docker 1.7.4 in this run`);
       expect(seen, `${d.id} occurrences`).toEqual([]);
     });
   }
