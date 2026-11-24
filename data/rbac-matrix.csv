@@ -90,8 +90,8 @@ RBAC-D016,docker,admin,/api/order/po/,GET,list,200,roles: view
 RBAC-D017,docker,admin,/api/order/po/,POST,empty-body,400,roles: add
 RBAC-D018,docker,admin,/api/order/po/{id}/,DELETE,missing-id,404,roles: delete
 RBAC-D019,docker,steven,/api/user/,GET,list,200,scope g:read
-RBAC-D020,docker,steven,/api/user/,POST,empty-body,400,scope a:staff
-RBAC-D021,docker,steven,/api/user/{id}/,DELETE,missing-id,404,scope a:staff
+RBAC-D020,docker,steven,/api/user/,POST,empty-body,403,"observed on Docker 1.7.4 run 45411670798: staff without the admin role cannot manage users (schema scope says a:staff)"
+RBAC-D021,docker,steven,/api/user/{id}/,DELETE,missing-id,403,"observed on Docker 1.7.4 run 45411670798: staff without the admin role cannot manage users (schema scope says a:staff)"
 RBAC-D022,docker,admin,/api/user/,GET,list,200,scope g:read
 RBAC-D023,docker,admin,/api/user/,POST,empty-body,400,scope a:staff
 RBAC-D024,docker,admin,/api/user/{id}/,DELETE,missing-id,404,scope a:staff
@@ -179,9 +179,9 @@ RBAC-D105,docker,engineer,/api/user/{id}/,DELETE,delete,403,scope a:staff
 RBAC-D106,docker,noaccess,/api/user/,POST,create,403,scope a:staff
 RBAC-D107,docker,noaccess,/api/user/{id}/,PATCH,update,403,scope a:staff
 RBAC-D108,docker,noaccess,/api/user/{id}/,DELETE,delete,403,scope a:staff
-RBAC-D109,docker,steven,/api/user/,POST,create,201,scope a:staff
-RBAC-D110,docker,steven,/api/user/{id}/,PATCH,update,200,scope a:staff
-RBAC-D111,docker,steven,/api/user/{id}/,DELETE,delete,204,scope a:staff
+RBAC-D109,docker,steven,/api/user/,POST,create,403,"observed on Docker 1.7.4 run 45411670798: staff without the admin role cannot manage users (schema scope says a:staff)"
+RBAC-D110,docker,steven,/api/user/{id}/,PATCH,update,403,"observed on Docker 1.7.4 run 45411670798: staff without the admin role cannot manage users (schema scope says a:staff)"
+RBAC-D111,docker,steven,/api/user/{id}/,DELETE,delete,403,"observed on Docker 1.7.4 run 45411670798: staff without the admin role cannot manage users (schema scope says a:staff)"
 RBAC-D112,docker,admin,/api/user/,POST,create,201,scope a:staff
 RBAC-D113,docker,admin,/api/user/{id}/,PATCH,update,200,scope a:staff
 RBAC-D114,docker,admin,/api/user/{id}/,DELETE,delete,204,scope a:staff

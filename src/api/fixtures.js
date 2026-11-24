@@ -14,6 +14,12 @@ let lookups = null;
 
 const unique = () => `${RUN}${(counter += 1)}`;
 
+/** pk of a created record. POST /api/stock/ answers with an array (one request can create several items). */
+function pkOf(body) {
+  const record = Array.isArray(body) ? body[0] : body;
+  return record && record.pk ? record.pk : null;
+}
+
 async function asAdmin(request, method, path, data) {
   return send(request, { method, path, role: ADMIN, data, target: 'docker' });
 }
@@ -76,10 +82,10 @@ function updatePayload(resource) {
 async function createAsAdmin(request, resource) {
   const ctx = await context(request);
   const res = await asAdmin(request, 'POST', `/api/${resource}/`, createPayload(resource, ctx));
-  if (res.status !== 201 || !res.body || !res.body.pk) {
-    throw new Error(`fixture: admin could not create ${resource}: HTTP ${res.status} ${res.text.slice(0, 200)}`);
-  }
-  return res.body.pk;
+  const pk = pkOf(res.body);
+  if (res.status !== 201) throw new Error(`fixture: admin could not create ${resource}: HTTP ${res.status} ${res.text.slice(0, 200)}`);
+  if (!pk) throw new Error(`fixture: admin created ${resource} (HTTP 201) but no pk was found in the response: ${res.text.slice(0, 200)}`);
+  return pk;
 }
 
 /** A part can only be deleted once it is inactive; this keeps delete tests about permission only. */
@@ -101,4 +107,4 @@ async function removeAsAdmin(request, resource, pk) {
   }
 }
 
-module.exports = { context, createPayload, updatePayload, createAsAdmin, prepareForDelete, removeAsAdmin };
+module.exports = { pkOf, context, createPayload, updatePayload, createAsAdmin, prepareForDelete, removeAsAdmin };

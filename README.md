@@ -25,7 +25,8 @@ The demo's published accounts. Each one's permissions were read from `GET /api/u
 | `engineer` | parts and categories: full; stock: view; purchase and sales orders: none |
 | `noaccess` | none (can log in) |
 | `ian` | inactive account, cannot log in |
-| `steven`, `admin` | staff and superuser, **Docker only** |
+| `steven` | staff, group "all access"; cannot manage users on 1.7.4 (DOC-001), **Docker only** |
+| `admin` | superuser, **Docker only** |
 
 ## 3. How the probes stay safe on the public server
 
@@ -53,7 +54,7 @@ InvenTree checks permissions before it validates a body or looks up a record. Th
 
 ## 5. Findings
 
-Each finding is pinned by a `test.fail` test, which turns red if InvenTree's behaviour changes.
+FIND and CONTRACT findings are each pinned by a `test.fail` test, which turns red if InvenTree's behaviour changes. DOC-001 is pinned by the matrix rows that expect the observed 403.
 
 | ID | Finding |
 | -- | ------- |
@@ -61,6 +62,7 @@ Each finding is pinned by a `test.fail` test, which turns red if InvenTree's beh
 | CONTRACT-001 | Timestamps come back as `"2024-07-27 05:08"`, but the schema declares RFC 3339 `date-time`. |
 | CONTRACT-002 | Image URLs are relative paths (`/media/part_images/…`), but the schema declares an absolute `uri`. |
 | CONTRACT-003 | Decimal fields (`total_price`, `purchase_price`, `pricing_min`, `pricing_max`) come back as JSON numbers, but the schema declares decimal strings. |
+| DOC-001 | The schema documents user management (`POST`, `PATCH`, `DELETE /api/user/`) as scope `a:staff`. On 1.7.4 the staff account `steven` (group "all access", admin role: view only) gets **403**; only the superuser can manage users. This is stricter than documented, not looser. The matrix expects the observed 403. |
 
 ## 6. Execution evidence
 

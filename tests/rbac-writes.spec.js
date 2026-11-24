@@ -21,7 +21,8 @@ async function runWrite(request, row) {
   if (row.probe === 'create') {
     const ctx = await fx.context(request);
     const res = await send(request, { method: 'POST', path: `/api/${resource}/`, role: row.role, data: fx.createPayload(resource, ctx), target: 'docker' });
-    if (res.status === 201 && res.body && res.body.pk) res.cleanup = await fx.removeAsAdmin(request, resource, res.body.pk);
+    const created = res.status === 201 ? fx.pkOf(res.body) : null;
+    if (created) res.cleanup = await fx.removeAsAdmin(request, resource, created);
     return res;
   }
 
