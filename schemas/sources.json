@@ -1,0 +1,24 @@
+{
+  "generatedBy": "scripts/extract-schemas.js",
+  "pinned": {
+    "apiVersion": 570,
+    "source": "https://raw.githubusercontent.com/inventree/schema/main/export/570/api.yaml",
+    "note": "inventree/inventree:1.7.4"
+  },
+  "current": {
+    "apiVersion": 583,
+    "source": "https://raw.githubusercontent.com/inventree/schema/main/export/583/api.yaml",
+    "note": "public demo when generated"
+  },
+  "components": [
+    "PaginatedPartList",
+    "Part",
+    "PaginatedStockItemList",
+    "StockItem",
+    "PaginatedPurchaseOrderList",
+    "PurchaseOrder",
+    "PaginatedUserCreateList",
+    "MeUser",
+    "Role"
+  ]
+}

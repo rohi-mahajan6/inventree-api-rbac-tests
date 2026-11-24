@@ -1,0 +1,25 @@
+{
+  "name": "inventree-api-rbac-tests",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Role-based access control, contract and load tests for the InvenTree REST API.",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test:public": "playwright test --project=public",
+    "test:docker": "playwright test --project=docker",
+    "schemas": "node scripts/extract-schemas.js",
+    "report": "node scripts/build-report.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "csv-parse": "^7.0.3",
+    "dotenv": "^18.0.10",
+    "yaml": "^2.9.1"
+  }
+}

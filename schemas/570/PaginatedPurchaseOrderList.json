@@ -1,0 +1,888 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PaginatedPurchaseOrderList",
+  "type": "object",
+  "required": [
+    "count",
+    "results"
+  ],
+  "properties": {
+    "count": {
+      "type": "integer"
+    },
+    "next": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    },
+    "previous": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/PurchaseOrder"
+      }
+    }
+  },
+  "$defs": {
+    "PurchaseOrder": {
+      "type": "object",
+      "description": "Serializer for a PurchaseOrder object.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "created_by": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/User"
+            }
+          ]
+        },
+        "creation_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "issue_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date",
+          "description": "Date order was issued"
+        },
+        "start_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date",
+          "description": "Scheduled start date for this order"
+        },
+        "target_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date",
+          "description": "Expected date for order delivery. Order will be overdue after this date."
+        },
+        "description": {
+          "type": "string",
+          "description": "Order description (optional)",
+          "maxLength": 250
+        },
+        "line_items": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "completed_lines": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "link": {
+          "description": "Link to external page",
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uri",
+              "maxLength": 2000
+            },
+            {
+              "type": "string",
+              "maxLength": 0
+            }
+          ]
+        },
+        "project_code": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Select project code for this order"
+        },
+        "reference": {
+          "type": "string"
+        },
+        "responsible": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "User or group responsible for this order"
+        },
+        "contact": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Point of contact for this order"
+        },
+        "address": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "title": "Supplier Address",
+          "description": "Supplier address for this order"
+        },
+        "status": {
+          "type": "integer",
+          "title": "Order Status"
+        },
+        "status_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status_custom_key": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "title": "Custom Status Key",
+          "description": "Update order status to a custom value for this logical value"
+        },
+        "barcode_hash": {
+          "type": "string"
+        },
+        "overdue": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "duplicate": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/PurchaseOrderDuplicateOptions"
+            }
+          ],
+          "title": "Duplication Options",
+          "description": "Specify options for duplicating this item"
+        },
+        "address_detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AddressBrief"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "contact_detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Contact"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "project_code_detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ProjectCode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "project_code_label": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "responsible_detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Owner"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "parameters": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/Parameter"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "complete_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date",
+          "title": "Completion Date",
+          "description": "Date order was completed"
+        },
+        "supplier": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Company from which the items are being ordered"
+        },
+        "supplier_detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CompanyBrief"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "supplier_reference": {
+          "type": "string",
+          "description": "Supplier order reference code",
+          "maxLength": 64
+        },
+        "supplier_name": {
+          "type": "string"
+        },
+        "total_price": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "decimal",
+          "pattern": "^-?\\d{0,13}(?:\\.\\d{0,6})?$"
+        },
+        "order_currency": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Currency for this order (leave blank to use company default)\n\n* `` - ---------\n* `AUD` - AUD - Australian Dollar\n* `CAD` - CAD - Canadian Dollar\n* `CNY` - CNY - Chinese Yuan\n* `EUR` - EUR - Euro\n* `GBP` - GBP - British Pound\n* `JPY` - JPY - Japanese Yen\n* `NZD` - NZD - New Zealand Dollar\n* `USD` - USD - US Dollar\n\nOther valid currencies may be found in the 'CURRENCY_CODES' global setting."
+        },
+        "destination": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Destination for received items"
+        },
+        "receiving_company": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Internal company which is receiving the items"
+        },
+        "receiving_company_detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CompanyBrief"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "delivery_address": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Delivery address for this order"
+        },
+        "delivery_address_detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AddressBrief"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "updated_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Timestamp of last update"
+        }
+      },
+      "required": [
+        "barcode_hash",
+        "created_by",
+        "pk",
+        "reference",
+        "status",
+        "supplier",
+        "supplier_name"
+      ]
+    },
+    "User": {
+      "type": "object",
+      "description": "Serializer for a User.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "username": {
+          "type": "string",
+          "description": "Username"
+        },
+        "first_name": {
+          "type": "string",
+          "description": "First name of the user"
+        },
+        "last_name": {
+          "type": "string",
+          "description": "Last name of the user"
+        },
+        "email": {
+          "description": "Email address of the user",
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "email"
+            },
+            {
+              "type": "string",
+              "maxLength": 0
+            }
+          ]
+        }
+      },
+      "required": [
+        "email",
+        "first_name",
+        "last_name",
+        "pk",
+        "username"
+      ]
+    },
+    "PurchaseOrderDuplicateOptions": {
+      "type": "object",
+      "description": "Generic serializer for specifying copy options when duplicating a model instance.\n\nBuilds its fields dynamically at instantiation time so the same class can be\nreused for any model without subclassing.",
+      "properties": {
+        "original": {
+          "type": "integer",
+          "description": "Select instance to duplicate"
+        },
+        "copy_parameters": {
+          "type": "boolean",
+          "default": true,
+          "description": "Copy parameters from the original item"
+        },
+        "copy_notes": {
+          "type": "boolean",
+          "default": true,
+          "description": "Copy notes from the original item"
+        },
+        "copy_lines": {
+          "type": "boolean",
+          "default": true,
+          "description": "Copy line items from the original order"
+        },
+        "copy_extra_lines": {
+          "type": "boolean",
+          "default": true,
+          "description": "Copy extra line items from the original order"
+        }
+      },
+      "required": [
+        "original"
+      ]
+    },
+    "AddressBrief": {
+      "type": "object",
+      "description": "Serializer for Address Model (limited).",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "line1": {
+          "type": "string",
+          "title": "Line 1",
+          "description": "Address line 1",
+          "maxLength": 50
+        },
+        "line2": {
+          "type": "string",
+          "title": "Line 2",
+          "description": "Address line 2",
+          "maxLength": 50
+        },
+        "postal_code": {
+          "type": "string",
+          "description": "Postal code",
+          "maxLength": 10
+        },
+        "postal_city": {
+          "type": "string",
+          "title": "City/Region",
+          "description": "Postal code city/region",
+          "maxLength": 50
+        },
+        "province": {
+          "type": "string",
+          "title": "State/Province",
+          "description": "State or province",
+          "maxLength": 50
+        },
+        "country": {
+          "type": "string",
+          "description": "Address country",
+          "maxLength": 50
+        },
+        "phone": {
+          "type": "string",
+          "title": "Phone number",
+          "description": "Phone number for this address",
+          "maxLength": 50
+        },
+        "email": {
+          "description": "Email address for this address",
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "email",
+              "maxLength": 254
+            },
+            {
+              "type": "string",
+              "maxLength": 0
+            }
+          ]
+        },
+        "shipping_notes": {
+          "type": "string",
+          "title": "Courier shipping notes",
+          "description": "Notes for shipping courier",
+          "maxLength": 100
+        },
+        "internal_shipping_notes": {
+          "type": "string",
+          "description": "Shipping notes for internal use",
+          "maxLength": 100
+        }
+      },
+      "required": [
+        "pk"
+      ]
+    },
+    "Contact": {
+      "type": "object",
+      "description": "Serializer class for the Contact model.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "company": {
+          "type": "integer"
+        },
+        "company_name": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "email": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "email",
+              "maxLength": 254
+            },
+            {
+              "type": "string",
+              "maxLength": 0
+            }
+          ]
+        },
+        "role": {
+          "type": "string",
+          "maxLength": 100
+        }
+      },
+      "required": [
+        "company",
+        "company_name",
+        "name",
+        "pk"
+      ]
+    },
+    "ProjectCode": {
+      "type": "object",
+      "description": "Serializer for the ProjectCode model.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "code": {
+          "type": "string",
+          "title": "Project Code",
+          "description": "Unique project code",
+          "maxLength": 50
+        },
+        "description": {
+          "type": "string",
+          "description": "Project description",
+          "maxLength": 200
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Is this project code active?"
+        },
+        "responsible": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "User or group responsible for this project"
+        },
+        "responsible_detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Owner"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "code",
+        "pk"
+      ]
+    },
+    "Owner": {
+      "type": "object",
+      "description": "Serializer for an \"Owner\" (either a \"user\" or a \"group\").",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "owner_id": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "maximum": 9223372036854776000,
+          "minimum": 0,
+          "format": "int64"
+        },
+        "owner_model": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "name",
+        "owner_model",
+        "pk"
+      ]
+    },
+    "Parameter": {
+      "type": "object",
+      "description": "Serializer for the Parameter model.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "template": {
+          "type": "integer",
+          "description": "Parameter template"
+        },
+        "model_type": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ModelTypeD42Enum"
+            }
+          ],
+          "default": ""
+        },
+        "model_id": {
+          "type": "integer",
+          "maximum": 9223372036854776000,
+          "minimum": 0,
+          "format": "int64",
+          "description": "ID of the target model for this parameter"
+        },
+        "data": {
+          "type": "string",
+          "description": "Parameter Value",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "data_numeric": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "double"
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional note field",
+          "maxLength": 500
+        },
+        "updated": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Timestamp of last update"
+        },
+        "updated_by": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "title": "Update By",
+          "description": "User who last updated this object"
+        },
+        "template_detail": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ParameterTemplate"
+            }
+          ]
+        },
+        "updated_by_detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/User"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "data",
+        "model_id",
+        "pk",
+        "template",
+        "template_detail"
+      ]
+    },
+    "CompanyBrief": {
+      "type": "object",
+      "description": "Serializer for Company object (limited detail).",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Is this company active?"
+        },
+        "name": {
+          "type": "string",
+          "title": "Company name",
+          "description": "Company name",
+          "maxLength": 100
+        },
+        "description": {
+          "type": "string",
+          "title": "Company description",
+          "description": "Description of the company",
+          "maxLength": 500
+        },
+        "image": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "thumbnail": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string",
+          "description": "Default currency used for this company"
+        },
+        "tax_id": {
+          "type": "string",
+          "description": "Company Tax ID",
+          "maxLength": 50
+        }
+      },
+      "required": [
+        "currency",
+        "name",
+        "pk",
+        "thumbnail"
+      ]
+    },
+    "ModelTypeD42Enum": {
+      "enum": [
+        "build.build",
+        "company.company",
+        "company.manufacturerpart",
+        "company.supplierpart",
+        "order.purchaseorder",
+        "order.returnorder",
+        "order.salesorder",
+        "order.salesordershipment",
+        "order.transferorder",
+        "part.part",
+        "part.partcategory",
+        "stock.stocklocation"
+      ],
+      "type": "string",
+      "description": "* `build.build` - Build Order\n* `company.company` - Company\n* `company.manufacturerpart` - Manufacturer Part\n* `company.supplierpart` - Supplier Part\n* `order.purchaseorder` - Purchase Order\n* `order.returnorder` - Return Order\n* `order.salesorder` - Sales Order\n* `order.salesordershipment` - Sales Order Shipment\n* `order.transferorder` - Transfer Order\n* `part.part` - Part\n* `part.partcategory` - Part Category\n* `stock.stocklocation` - Stock Location"
+    },
+    "ParameterTemplate": {
+      "type": "object",
+      "description": "Serializer for the ParameterTemplate model.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Parameter Name",
+          "maxLength": 100
+        },
+        "units": {
+          "type": "string",
+          "description": "Physical units for this parameter",
+          "maxLength": 25
+        },
+        "description": {
+          "type": "string",
+          "description": "Parameter description",
+          "maxLength": 250
+        },
+        "model_type": {
+          "anyOf": [
+            {
+              "default": "",
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/ModelTypeD42Enum"
+                },
+                {
+                  "$ref": "#/$defs/BlankEnum"
+                },
+                {
+                  "$ref": "#/$defs/NullEnum"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "checkbox": {
+          "type": "boolean",
+          "description": "Is this parameter a checkbox?"
+        },
+        "choices": {
+          "type": "string",
+          "description": "Valid choices for this parameter (comma-separated)",
+          "maxLength": 5000
+        },
+        "selectionlist": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "title": "Selection List",
+          "description": "Selection list for this parameter"
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Is this parameter template enabled?"
+        },
+        "unique": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/UniqueEnum"
+            }
+          ],
+          "title": "Uniqueness",
+          "description": "Enforce uniqueness of linked parameter values against this template\n\n* `0` - No uniqueness required\n* `1` - Unique for model type\n* `2` - Globally unique",
+          "minimum": 0,
+          "maximum": 9223372036854776000
+        }
+      },
+      "required": [
+        "name",
+        "pk"
+      ]
+    },
+    "BlankEnum": {
+      "enum": [
+        ""
+      ]
+    },
+    "NullEnum": {
+      "enum": [
+        null
+      ]
+    },
+    "UniqueEnum": {
+      "enum": [
+        0,
+        1,
+        2
+      ],
+      "type": "integer",
+      "description": "* `0` - No uniqueness required\n* `1` - Unique for model type\n* `2` - Globally unique"
+    }
+  }
+}

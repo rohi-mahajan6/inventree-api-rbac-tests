@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Error bodies (hand-written)",
+  "description": "The OpenAPI documents do not describe error bodies, so these are written by hand from the responses observed on the public demo (2026-11-24). 401 and 403 use Django REST framework's {detail}; 400 maps each invalid field to a message or a list of messages.",
+  "$defs": {
+    "detail": {
+      "type": "object",
+      "required": ["detail"],
+      "properties": { "detail": { "type": "string", "minLength": 1 } }
+    },
+    "validation": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "anyOf": [
+          { "type": "string" },
+          { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+        ]
+      }
+    }
+  }
+}

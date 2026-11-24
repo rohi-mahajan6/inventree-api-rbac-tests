@@ -1,0 +1,216 @@
+name: API RBAC
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# A newer push supersedes an older run on the same branch.
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # Safe probes only (rows with target "both"): GET lists, POST with an empty body, DELETE of a
+  # missing id. Nothing is created or changed on the shared demo. One worker, no load.
+  public-readonly:
+    name: Public demo (read-only probes)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      INVENTREE_BASE_URL: https://demo.inventree.org
+      INVENTREE_TARGET: public
+      INVENTREE_DEMO_PASSWORDS: ${{ secrets.INVENTREE_DEMO_PASSWORDS }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      # An unset secret arrives as an empty string: fail early with the missing account names.
+      - name: Check required secrets
+        run: |
+          node -e '
+            let p = {};
+            try { p = JSON.parse(process.env.INVENTREE_DEMO_PASSWORDS || "{}"); } catch { console.log("::error::INVENTREE_DEMO_PASSWORDS is not valid JSON"); process.exit(1); }
+            const missing = ["allaccess", "reader", "engineer", "noaccess", "ian"].filter((u) => !p[u]);
+            if (missing.length) { console.log("::error::INVENTREE_DEMO_PASSWORDS has no password for: " + missing.join(", ")); process.exit(1); }
+            console.log("Required accounts are present.");'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # API tests only: no browser download needed.
+      - name: Run safe probes against the public demo
+        run: npx playwright test --project=public
+
+      - name: Upload results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-public
+          path: results/public
+          if-no-files-found: warn
+          retention-days: 30
+
+  # Every row, including real creates, updates and deletes, plus k6, against a throwaway container.
+  docker-full:
+    name: Docker 1.7.4 (full matrix + k6)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      INVENTREE_BASE_URL: http://localhost:8000
+      INVENTREE_TARGET: docker
+      INVENTREE_DEMO_PASSWORDS: ${{ secrets.INVENTREE_DEMO_PASSWORDS }}
+      INVENTREE_IMAGE: inventree/inventree:1.7.4
+      DEMO_DATASET_BRANCH: 1.7.x
+    # PostgreSQL and Redis as service containers. The credentials only exist inside this
+    # job's throwaway containers and never reach a real database.
+    services:
+      inventree-db:
+        image: postgres:17
+        env:
+          POSTGRES_USER: pguser
+          POSTGRES_PASSWORD: pgpassword
+          POSTGRES_DB: inventree
+        options: >-
+          --health-cmd "pg_isready -U pguser -d inventree"
+          --health-interval 5s --health-timeout 5s --health-retries 30
+      inventree-cache:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 5s --health-retries 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Check required secrets
+        run: |
+          node -e '
+            let p = {};
+            try { p = JSON.parse(process.env.INVENTREE_DEMO_PASSWORDS || "{}"); } catch { console.log("::error::INVENTREE_DEMO_PASSWORDS is not valid JSON"); process.exit(1); }
+            const missing = ["allaccess", "reader", "engineer", "noaccess", "ian", "steven", "admin"].filter((u) => !p[u]);
+            if (missing.length) { console.log("::error::INVENTREE_DEMO_PASSWORDS has no password for: " + missing.join(", ")); process.exit(1); }
+            console.log("Required accounts are present.");'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # InvenTree is started here, not as a service container: service containers all start at once,
+      # and InvenTree must not start before PostgreSQL is healthy (it runs migrations on start).
+      # Jobs wait for service health checks before the first step, so the database is ready by now.
+      - name: Start InvenTree ${{ env.INVENTREE_IMAGE }}
+        run: |
+          docker run -d --name inventree \
+            --network ${{ job.services.inventree-db.network }} \
+            -p 8000:8000 \
+            -e INVENTREE_DB_ENGINE=postgresql \
+            -e INVENTREE_DB_NAME=inventree \
+            -e INVENTREE_DB_HOST=inventree-db \
+            -e INVENTREE_DB_PORT=5432 \
+            -e INVENTREE_DB_USER=pguser \
+            -e INVENTREE_DB_PASSWORD=pgpassword \
+            -e INVENTREE_CACHE_ENABLED=True \
+            -e INVENTREE_CACHE_HOST=inventree-cache \
+            -e INVENTREE_CACHE_PORT=6379 \
+            -e INVENTREE_AUTO_UPDATE=True \
+            -e INVENTREE_PLUGINS_ENABLED=False \
+            -e INVENTREE_SITE_URL=http://localhost:8000 \
+            -e INVENTREE_LOG_LEVEL=WARNING \
+            "$INVENTREE_IMAGE"
+
+      - name: Wait for the API
+        run: |
+          for i in $(seq 1 120); do
+            if curl -fsS http://localhost:8000/api/ > /tmp/api.json 2>/dev/null; then
+              echo "API is up after $((i * 5)) s: $(cat /tmp/api.json | head -c 200)"; exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::InvenTree did not answer on /api/ within 10 minutes"
+          docker logs --tail 200 inventree
+          exit 1
+
+      # The official demo dataset (MIT) for this release line: the same 9 accounts, 4 groups and
+      # permission rule sets as the public demo. Migrations already ran on start, hence --ignore-update.
+      - name: Load the demo dataset
+        run: docker exec inventree invoke dev.setup-test --ignore-update --branch "$DEMO_DATASET_BRANCH"
+
+      - name: Run the full matrix against Docker
+        run: npx playwright test --project=docker
+
+      - uses: grafana/setup-k6-action@v1
+
+      - name: Run k6 read scenario
+        if: ${{ !cancelled() }}
+        run: k6 run --summary-export results/docker/k6-summary.json k6/parts-read.js
+
+      - name: Container logs on failure
+        if: ${{ failure() }}
+        run: docker logs --tail 300 inventree
+
+      - name: Upload results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-docker
+          path: results/docker
+          if-no-files-found: warn
+          retention-days: 30
+
+  report:
+    name: Build matrix report
+    needs: [public-readonly, docker-full]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: results-*
+          path: results
+
+      - name: Build HTML report
+        run: node scripts/build-report.js --in results --out site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  # Separate job: the github-pages environment only accepts main, so pull requests build the report
+  # but do not deploy it.
+  deploy:
+    name: Deploy report
+    needs: report
+    if: ${{ !cancelled() && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

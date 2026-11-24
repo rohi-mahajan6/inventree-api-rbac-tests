@@ -1,0 +1,193 @@
+id,target,role,endpoint,method,probe,expected_status,basis
+RBAC-P001,both,allaccess,/api/part/,GET,list,200,observed on public demo 2026-11-24
+RBAC-P002,both,allaccess,/api/part/,POST,empty-body,400,observed on public demo 2026-11-24
+RBAC-P003,both,allaccess,/api/part/{id}/,DELETE,missing-id,404,observed on public demo 2026-11-24
+RBAC-P004,both,reader,/api/part/,GET,list,200,observed on public demo 2026-11-24
+RBAC-P005,both,reader,/api/part/,POST,empty-body,403,observed on public demo 2026-11-24
+RBAC-P006,both,reader,/api/part/{id}/,DELETE,missing-id,403,observed on public demo 2026-11-24
+RBAC-P007,both,engineer,/api/part/,GET,list,200,observed on public demo 2026-11-24
+RBAC-P008,both,engineer,/api/part/,POST,empty-body,400,observed on public demo 2026-11-24
+RBAC-P009,both,engineer,/api/part/{id}/,DELETE,missing-id,404,observed on public demo 2026-11-24
+RBAC-P010,both,noaccess,/api/part/,GET,list,403,observed on public demo 2026-11-24
+RBAC-P011,both,noaccess,/api/part/,POST,empty-body,403,observed on public demo 2026-11-24
+RBAC-P012,both,noaccess,/api/part/{id}/,DELETE,missing-id,403,observed on public demo 2026-11-24
+RBAC-P013,both,ian,/api/part/,GET,list,401,inactive account; 401 observed on /api/user/me/
+RBAC-P014,both,ian,/api/part/,POST,empty-body,401,inactive account; 401 observed on /api/user/me/
+RBAC-P015,both,ian,/api/part/{id}/,DELETE,missing-id,401,inactive account; 401 observed on /api/user/me/
+RBAC-P016,both,anonymous,/api/part/,GET,list,401,observed on public demo 2026-11-24
+RBAC-P017,both,anonymous,/api/part/,POST,empty-body,401,observed on public demo 2026-11-24
+RBAC-P018,both,anonymous,/api/part/{id}/,DELETE,missing-id,401,observed on public demo 2026-11-24
+RBAC-P019,both,allaccess,/api/stock/,GET,list,200,observed on public demo 2026-11-24
+RBAC-P020,both,allaccess,/api/stock/,POST,empty-body,400,observed on public demo 2026-11-24
+RBAC-P021,both,allaccess,/api/stock/{id}/,DELETE,missing-id,404,observed on public demo 2026-11-24
+RBAC-P022,both,reader,/api/stock/,GET,list,200,observed on public demo 2026-11-24
+RBAC-P023,both,reader,/api/stock/,POST,empty-body,403,observed on public demo 2026-11-24
+RBAC-P024,both,reader,/api/stock/{id}/,DELETE,missing-id,403,observed on public demo 2026-11-24
+RBAC-P025,both,engineer,/api/stock/,GET,list,200,observed on public demo 2026-11-24
+RBAC-P026,both,engineer,/api/stock/,POST,empty-body,403,observed on public demo 2026-11-24
+RBAC-P027,both,engineer,/api/stock/{id}/,DELETE,missing-id,403,observed on public demo 2026-11-24
+RBAC-P028,both,noaccess,/api/stock/,GET,list,403,observed on public demo 2026-11-24
+RBAC-P029,both,noaccess,/api/stock/,POST,empty-body,403,observed on public demo 2026-11-24
+RBAC-P030,both,noaccess,/api/stock/{id}/,DELETE,missing-id,403,observed on public demo 2026-11-24
+RBAC-P031,both,ian,/api/stock/,GET,list,401,inactive account; 401 observed on /api/user/me/
+RBAC-P032,both,ian,/api/stock/,POST,empty-body,401,inactive account; 401 observed on /api/user/me/
+RBAC-P033,both,ian,/api/stock/{id}/,DELETE,missing-id,401,inactive account; 401 observed on /api/user/me/
+RBAC-P034,both,anonymous,/api/stock/,GET,list,401,observed on public demo 2026-11-24
+RBAC-P035,both,anonymous,/api/stock/,POST,empty-body,401,observed on public demo 2026-11-24
+RBAC-P036,both,anonymous,/api/stock/{id}/,DELETE,missing-id,401,observed on public demo 2026-11-24
+RBAC-P037,both,allaccess,/api/order/po/,GET,list,200,observed on public demo 2026-11-24
+RBAC-P038,both,allaccess,/api/order/po/,POST,empty-body,400,observed on public demo 2026-11-24
+RBAC-P039,both,allaccess,/api/order/po/{id}/,DELETE,missing-id,404,observed on public demo 2026-11-24
+RBAC-P040,both,reader,/api/order/po/,GET,list,200,observed on public demo 2026-11-24
+RBAC-P041,both,reader,/api/order/po/,POST,empty-body,403,observed on public demo 2026-11-24
+RBAC-P042,both,reader,/api/order/po/{id}/,DELETE,missing-id,403,observed on public demo 2026-11-24
+RBAC-P043,both,engineer,/api/order/po/,GET,list,403,observed on public demo 2026-11-24
+RBAC-P044,both,engineer,/api/order/po/,POST,empty-body,403,observed on public demo 2026-11-24
+RBAC-P045,both,engineer,/api/order/po/{id}/,DELETE,missing-id,403,observed on public demo 2026-11-24
+RBAC-P046,both,noaccess,/api/order/po/,GET,list,403,observed on public demo 2026-11-24
+RBAC-P047,both,noaccess,/api/order/po/,POST,empty-body,403,observed on public demo 2026-11-24
+RBAC-P048,both,noaccess,/api/order/po/{id}/,DELETE,missing-id,403,observed on public demo 2026-11-24
+RBAC-P049,both,ian,/api/order/po/,GET,list,401,inactive account; 401 observed on /api/user/me/
+RBAC-P050,both,ian,/api/order/po/,POST,empty-body,401,inactive account; 401 observed on /api/user/me/
+RBAC-P051,both,ian,/api/order/po/{id}/,DELETE,missing-id,401,inactive account; 401 observed on /api/user/me/
+RBAC-P052,both,anonymous,/api/order/po/,GET,list,401,observed on public demo 2026-11-24
+RBAC-P053,both,anonymous,/api/order/po/,POST,empty-body,401,observed on public demo 2026-11-24
+RBAC-P054,both,anonymous,/api/order/po/{id}/,DELETE,missing-id,401,observed on public demo 2026-11-24
+RBAC-P055,both,allaccess,/api/user/,GET,list,200,"observed on public demo 2026-11-24 (any logged-in user, scope g:read)"
+RBAC-P056,both,allaccess,/api/user/,POST,empty-body,403,"observed on public demo 2026-11-24 (staff only, scope a:staff)"
+RBAC-P057,both,allaccess,/api/user/{id}/,DELETE,missing-id,403,"observed on public demo 2026-11-24 (staff only, scope a:staff)"
+RBAC-P058,both,reader,/api/user/,GET,list,200,"observed on public demo 2026-11-24 (any logged-in user, scope g:read)"
+RBAC-P059,both,reader,/api/user/,POST,empty-body,403,"observed on public demo 2026-11-24 (staff only, scope a:staff)"
+RBAC-P060,both,reader,/api/user/{id}/,DELETE,missing-id,403,"observed on public demo 2026-11-24 (staff only, scope a:staff)"
+RBAC-P061,both,engineer,/api/user/,GET,list,200,"observed on public demo 2026-11-24 (any logged-in user, scope g:read)"
+RBAC-P062,both,engineer,/api/user/,POST,empty-body,403,"observed on public demo 2026-11-24 (staff only, scope a:staff)"
+RBAC-P063,both,engineer,/api/user/{id}/,DELETE,missing-id,403,"observed on public demo 2026-11-24 (staff only, scope a:staff)"
+RBAC-P064,both,noaccess,/api/user/,GET,list,200,"observed on public demo 2026-11-24 (any logged-in user, scope g:read)"
+RBAC-P065,both,noaccess,/api/user/,POST,empty-body,403,"observed on public demo 2026-11-24 (staff only, scope a:staff)"
+RBAC-P066,both,noaccess,/api/user/{id}/,DELETE,missing-id,403,"observed on public demo 2026-11-24 (staff only, scope a:staff)"
+RBAC-P067,both,ian,/api/user/,GET,list,401,inactive account; 401 observed on /api/user/me/
+RBAC-P068,both,ian,/api/user/,POST,empty-body,401,inactive account; 401 observed on /api/user/me/
+RBAC-P069,both,ian,/api/user/{id}/,DELETE,missing-id,401,inactive account; 401 observed on /api/user/me/
+RBAC-P070,both,anonymous,/api/user/,GET,list,401,observed on public demo 2026-11-24
+RBAC-P071,both,anonymous,/api/user/,POST,empty-body,401,observed on public demo 2026-11-24
+RBAC-P072,both,anonymous,/api/user/{id}/,DELETE,missing-id,401,observed on public demo 2026-11-24
+RBAC-D001,docker,steven,/api/part/,GET,list,200,roles: view
+RBAC-D002,docker,steven,/api/part/,POST,empty-body,400,roles: add
+RBAC-D003,docker,steven,/api/part/{id}/,DELETE,missing-id,404,roles: delete
+RBAC-D004,docker,admin,/api/part/,GET,list,200,roles: view
+RBAC-D005,docker,admin,/api/part/,POST,empty-body,400,roles: add
+RBAC-D006,docker,admin,/api/part/{id}/,DELETE,missing-id,404,roles: delete
+RBAC-D007,docker,steven,/api/stock/,GET,list,200,roles: view
+RBAC-D008,docker,steven,/api/stock/,POST,empty-body,400,roles: add
+RBAC-D009,docker,steven,/api/stock/{id}/,DELETE,missing-id,404,roles: delete
+RBAC-D010,docker,admin,/api/stock/,GET,list,200,roles: view
+RBAC-D011,docker,admin,/api/stock/,POST,empty-body,400,roles: add
+RBAC-D012,docker,admin,/api/stock/{id}/,DELETE,missing-id,404,roles: delete
+RBAC-D013,docker,steven,/api/order/po/,GET,list,200,roles: view
+RBAC-D014,docker,steven,/api/order/po/,POST,empty-body,400,roles: add
+RBAC-D015,docker,steven,/api/order/po/{id}/,DELETE,missing-id,404,roles: delete
+RBAC-D016,docker,admin,/api/order/po/,GET,list,200,roles: view
+RBAC-D017,docker,admin,/api/order/po/,POST,empty-body,400,roles: add
+RBAC-D018,docker,admin,/api/order/po/{id}/,DELETE,missing-id,404,roles: delete
+RBAC-D019,docker,steven,/api/user/,GET,list,200,scope g:read
+RBAC-D020,docker,steven,/api/user/,POST,empty-body,400,scope a:staff
+RBAC-D021,docker,steven,/api/user/{id}/,DELETE,missing-id,404,scope a:staff
+RBAC-D022,docker,admin,/api/user/,GET,list,200,scope g:read
+RBAC-D023,docker,admin,/api/user/,POST,empty-body,400,scope a:staff
+RBAC-D024,docker,admin,/api/user/{id}/,DELETE,missing-id,404,scope a:staff
+RBAC-D025,docker,allaccess,/api/part/,POST,create,201,roles: add
+RBAC-D026,docker,allaccess,/api/part/{id}/,PATCH,update,200,roles: change
+RBAC-D027,docker,allaccess,/api/part/{id}/,DELETE,delete,204,roles: delete
+RBAC-D028,docker,reader,/api/part/,POST,create,403,roles: no add
+RBAC-D029,docker,reader,/api/part/{id}/,PATCH,update,403,roles: no change
+RBAC-D030,docker,reader,/api/part/{id}/,DELETE,delete,403,roles: no delete
+RBAC-D031,docker,engineer,/api/part/,POST,create,201,roles: add
+RBAC-D032,docker,engineer,/api/part/{id}/,PATCH,update,200,roles: change
+RBAC-D033,docker,engineer,/api/part/{id}/,DELETE,delete,204,roles: delete
+RBAC-D034,docker,noaccess,/api/part/,POST,create,403,roles: no add
+RBAC-D035,docker,noaccess,/api/part/{id}/,PATCH,update,403,roles: no change
+RBAC-D036,docker,noaccess,/api/part/{id}/,DELETE,delete,403,roles: no delete
+RBAC-D037,docker,steven,/api/part/,POST,create,201,roles: add
+RBAC-D038,docker,steven,/api/part/{id}/,PATCH,update,200,roles: change
+RBAC-D039,docker,steven,/api/part/{id}/,DELETE,delete,204,roles: delete
+RBAC-D040,docker,admin,/api/part/,POST,create,201,roles: add
+RBAC-D041,docker,admin,/api/part/{id}/,PATCH,update,200,roles: change
+RBAC-D042,docker,admin,/api/part/{id}/,DELETE,delete,204,roles: delete
+RBAC-D043,docker,ian,/api/part/,POST,create,401,inactive account
+RBAC-D044,docker,ian,/api/part/{id}/,PATCH,update,401,inactive account
+RBAC-D045,docker,ian,/api/part/{id}/,DELETE,delete,401,inactive account
+RBAC-D046,docker,anonymous,/api/part/,POST,create,401,no credentials
+RBAC-D047,docker,anonymous,/api/part/{id}/,PATCH,update,401,no credentials
+RBAC-D048,docker,anonymous,/api/part/{id}/,DELETE,delete,401,no credentials
+RBAC-D049,docker,allaccess,/api/stock/,POST,create,201,roles: add
+RBAC-D050,docker,allaccess,/api/stock/{id}/,PATCH,update,200,roles: change
+RBAC-D051,docker,allaccess,/api/stock/{id}/,DELETE,delete,204,roles: delete
+RBAC-D052,docker,reader,/api/stock/,POST,create,403,roles: no add
+RBAC-D053,docker,reader,/api/stock/{id}/,PATCH,update,403,roles: no change
+RBAC-D054,docker,reader,/api/stock/{id}/,DELETE,delete,403,roles: no delete
+RBAC-D055,docker,engineer,/api/stock/,POST,create,403,roles: no add
+RBAC-D056,docker,engineer,/api/stock/{id}/,PATCH,update,403,roles: no change
+RBAC-D057,docker,engineer,/api/stock/{id}/,DELETE,delete,403,roles: no delete
+RBAC-D058,docker,noaccess,/api/stock/,POST,create,403,roles: no add
+RBAC-D059,docker,noaccess,/api/stock/{id}/,PATCH,update,403,roles: no change
+RBAC-D060,docker,noaccess,/api/stock/{id}/,DELETE,delete,403,roles: no delete
+RBAC-D061,docker,steven,/api/stock/,POST,create,201,roles: add
+RBAC-D062,docker,steven,/api/stock/{id}/,PATCH,update,200,roles: change
+RBAC-D063,docker,steven,/api/stock/{id}/,DELETE,delete,204,roles: delete
+RBAC-D064,docker,admin,/api/stock/,POST,create,201,roles: add
+RBAC-D065,docker,admin,/api/stock/{id}/,PATCH,update,200,roles: change
+RBAC-D066,docker,admin,/api/stock/{id}/,DELETE,delete,204,roles: delete
+RBAC-D067,docker,ian,/api/stock/,POST,create,401,inactive account
+RBAC-D068,docker,ian,/api/stock/{id}/,PATCH,update,401,inactive account
+RBAC-D069,docker,ian,/api/stock/{id}/,DELETE,delete,401,inactive account
+RBAC-D070,docker,anonymous,/api/stock/,POST,create,401,no credentials
+RBAC-D071,docker,anonymous,/api/stock/{id}/,PATCH,update,401,no credentials
+RBAC-D072,docker,anonymous,/api/stock/{id}/,DELETE,delete,401,no credentials
+RBAC-D073,docker,allaccess,/api/order/po/,POST,create,201,roles: add
+RBAC-D074,docker,allaccess,/api/order/po/{id}/,PATCH,update,200,roles: change
+RBAC-D075,docker,allaccess,/api/order/po/{id}/,DELETE,delete,204,roles: delete
+RBAC-D076,docker,reader,/api/order/po/,POST,create,403,roles: no add
+RBAC-D077,docker,reader,/api/order/po/{id}/,PATCH,update,403,roles: no change
+RBAC-D078,docker,reader,/api/order/po/{id}/,DELETE,delete,403,roles: no delete
+RBAC-D079,docker,engineer,/api/order/po/,POST,create,403,roles: no add
+RBAC-D080,docker,engineer,/api/order/po/{id}/,PATCH,update,403,roles: no change
+RBAC-D081,docker,engineer,/api/order/po/{id}/,DELETE,delete,403,roles: no delete
+RBAC-D082,docker,noaccess,/api/order/po/,POST,create,403,roles: no add
+RBAC-D083,docker,noaccess,/api/order/po/{id}/,PATCH,update,403,roles: no change
+RBAC-D084,docker,noaccess,/api/order/po/{id}/,DELETE,delete,403,roles: no delete
+RBAC-D085,docker,steven,/api/order/po/,POST,create,201,roles: add
+RBAC-D086,docker,steven,/api/order/po/{id}/,PATCH,update,200,roles: change
+RBAC-D087,docker,steven,/api/order/po/{id}/,DELETE,delete,204,roles: delete
+RBAC-D088,docker,admin,/api/order/po/,POST,create,201,roles: add
+RBAC-D089,docker,admin,/api/order/po/{id}/,PATCH,update,200,roles: change
+RBAC-D090,docker,admin,/api/order/po/{id}/,DELETE,delete,204,roles: delete
+RBAC-D091,docker,ian,/api/order/po/,POST,create,401,inactive account
+RBAC-D092,docker,ian,/api/order/po/{id}/,PATCH,update,401,inactive account
+RBAC-D093,docker,ian,/api/order/po/{id}/,DELETE,delete,401,inactive account
+RBAC-D094,docker,anonymous,/api/order/po/,POST,create,401,no credentials
+RBAC-D095,docker,anonymous,/api/order/po/{id}/,PATCH,update,401,no credentials
+RBAC-D096,docker,anonymous,/api/order/po/{id}/,DELETE,delete,401,no credentials
+RBAC-D097,docker,allaccess,/api/user/,POST,create,403,scope a:staff
+RBAC-D098,docker,allaccess,/api/user/{id}/,PATCH,update,403,scope a:staff
+RBAC-D099,docker,allaccess,/api/user/{id}/,DELETE,delete,403,scope a:staff
+RBAC-D100,docker,reader,/api/user/,POST,create,403,scope a:staff
+RBAC-D101,docker,reader,/api/user/{id}/,PATCH,update,403,scope a:staff
+RBAC-D102,docker,reader,/api/user/{id}/,DELETE,delete,403,scope a:staff
+RBAC-D103,docker,engineer,/api/user/,POST,create,403,scope a:staff
+RBAC-D104,docker,engineer,/api/user/{id}/,PATCH,update,403,scope a:staff
+RBAC-D105,docker,engineer,/api/user/{id}/,DELETE,delete,403,scope a:staff
+RBAC-D106,docker,noaccess,/api/user/,POST,create,403,scope a:staff
+RBAC-D107,docker,noaccess,/api/user/{id}/,PATCH,update,403,scope a:staff
+RBAC-D108,docker,noaccess,/api/user/{id}/,DELETE,delete,403,scope a:staff
+RBAC-D109,docker,steven,/api/user/,POST,create,201,scope a:staff
+RBAC-D110,docker,steven,/api/user/{id}/,PATCH,update,200,scope a:staff
+RBAC-D111,docker,steven,/api/user/{id}/,DELETE,delete,204,scope a:staff
+RBAC-D112,docker,admin,/api/user/,POST,create,201,scope a:staff
+RBAC-D113,docker,admin,/api/user/{id}/,PATCH,update,200,scope a:staff
+RBAC-D114,docker,admin,/api/user/{id}/,DELETE,delete,204,scope a:staff
+RBAC-D115,docker,ian,/api/user/,POST,create,401,inactive account
+RBAC-D116,docker,ian,/api/user/{id}/,PATCH,update,401,inactive account
+RBAC-D117,docker,ian,/api/user/{id}/,DELETE,delete,401,inactive account
+RBAC-D118,docker,anonymous,/api/user/,POST,create,401,no credentials
+RBAC-D119,docker,anonymous,/api/user/{id}/,PATCH,update,401,no credentials
+RBAC-D120,docker,anonymous,/api/user/{id}/,DELETE,delete,401,no credentials

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Role",
+  "type": "object",
+  "description": "Serializer for a roles associated with a given user.",
+  "properties": {
+    "user": {
+      "type": "integer"
+    },
+    "username": {
+      "type": "string",
+      "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+      "pattern": "^[\\w.@+-]+$",
+      "maxLength": 150
+    },
+    "roles": {
+      "type": "object",
+      "additionalProperties": {},
+      "description": "Roles associated with the user."
+    },
+    "permissions": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {},
+      "description": "Permissions associated with the user."
+    },
+    "is_staff": {
+      "type": "boolean",
+      "title": "Staff status",
+      "description": "Designates whether the user can log into this admin site."
+    },
+    "is_superuser": {
+      "type": "boolean",
+      "title": "Superuser status",
+      "description": "Designates that this user has all permissions without explicitly assigning them."
+    }
+  },
+  "required": [
+    "roles",
+    "user",
+    "username"
+  ],
+  "$defs": {}
+}

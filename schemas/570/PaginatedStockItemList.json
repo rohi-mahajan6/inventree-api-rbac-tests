@@ -1,0 +1,1562 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PaginatedStockItemList",
+  "type": "object",
+  "required": [
+    "count",
+    "results"
+  ],
+  "properties": {
+    "count": {
+      "type": "integer"
+    },
+    "next": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    },
+    "previous": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/StockItem"
+      }
+    }
+  },
+  "$defs": {
+    "StockItem": {
+      "type": "object",
+      "description": "Serializer for a StockItem.\n\n- Includes serialization for the linked part\n- Includes serialization for the item location",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "part": {
+          "type": "integer",
+          "description": "Base Part"
+        },
+        "quantity": {
+          "type": "number",
+          "format": "double"
+        },
+        "serial": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "title": "Serial Number",
+          "description": "Serial number for this item",
+          "maxLength": 100
+        },
+        "batch": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "title": "Batch Code",
+          "description": "Batch code for this stock item",
+          "maxLength": 100
+        },
+        "location": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "title": "Stock Location",
+          "description": "Where is this stock item located?"
+        },
+        "belongs_to": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "title": "Installed In",
+          "description": "Is this item installed in another item?"
+        },
+        "build": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "title": "Source Build",
+          "description": "Build for this stock item"
+        },
+        "consumed_by": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Build order which consumed this stock item"
+        },
+        "customer": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Customer"
+        },
+        "delete_on_deplete": {
+          "type": "boolean",
+          "description": "Delete this Stock Item when stock is depleted"
+        },
+        "expiry_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date",
+          "description": "Expiry date for stock item. Stock will be considered expired after this date"
+        },
+        "in_stock": {
+          "type": "boolean"
+        },
+        "is_building": {
+          "type": "boolean"
+        },
+        "link": {
+          "title": "External Link",
+          "description": "Link to external URL",
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uri",
+              "maxLength": 2000
+            },
+            {
+              "type": "string",
+              "maxLength": 0
+            }
+          ]
+        },
+        "owner": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Select Owner"
+        },
+        "packaging": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Packaging this stock item is stored in",
+          "maxLength": 50
+        },
+        "parent": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "title": "Parent Item",
+          "description": "Parent stock item"
+        },
+        "purchase_order": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "title": "Source Purchase Order",
+          "description": "Purchase order for this stock item"
+        },
+        "purchase_order_reference": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sales_order": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "title": "Destination Sales Order"
+        },
+        "sales_order_reference": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Status2a7Enum"
+            }
+          ],
+          "minimum": 0,
+          "maximum": 9223372036854776000
+        },
+        "status_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status_custom_key": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "title": "Custom status key",
+          "description": "Additional status information for this item\n\n* `10` - OK\n* `50` - Attention needed\n* `55` - Damaged\n* `60` - Destroyed\n* `65` - Rejected\n* `70` - Lost\n* `75` - Quarantined\n* `85` - Returned\n\nAdditional custom status keys may be retrieved from the corresponding 'status_retrieve' call."
+        },
+        "supplier_part": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Select a matching supplier part for this stock item"
+        },
+        "SKU": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "title": "Supplier Part Number"
+        },
+        "MPN": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "title": "Manufacturer Part Number"
+        },
+        "barcode_hash": {
+          "type": "string",
+          "description": "Unique hash of barcode data"
+        },
+        "creation_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Date that this stock item was created"
+        },
+        "stocktake_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "updated": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Timestamp of last update"
+        },
+        "purchase_price": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "decimal",
+          "pattern": "^-?\\d{0,13}(?:\\.\\d{0,6})?$",
+          "description": "Purchase price of this stock item, per unit or pack"
+        },
+        "purchase_price_currency": {
+          "type": "string",
+          "title": "Currency",
+          "description": "Purchase currency of this stock item\n\n* `AUD` - AUD - Australian Dollar\n* `CAD` - CAD - Canadian Dollar\n* `CNY` - CNY - Chinese Yuan\n* `EUR` - EUR - Euro\n* `GBP` - GBP - British Pound\n* `JPY` - JPY - Japanese Yen\n* `NZD` - NZD - New Zealand Dollar\n* `USD` - USD - US Dollar\n\nOther valid currencies may be found in the 'CURRENCY_CODES' global setting."
+        },
+        "use_pack_size": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Use pack size when adding: the quantity defined is the number of packs"
+        },
+        "serial_numbers": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Enter serial numbers for new items"
+        },
+        "duplicate": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/StockItemDuplicateOptions"
+            }
+          ],
+          "title": "Duplicate Stock Item",
+          "description": "Copy initial data from another stock item"
+        },
+        "allocated": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "double",
+          "title": "Allocated Quantity"
+        },
+        "expired": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "installed_items": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "child_items": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "stale": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "location_detail": {
+          "anyOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/LocationBrief"
+                }
+              ],
+              "title": "Location"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "location_path": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/TreePath"
+          }
+        },
+        "part_detail": {
+          "anyOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/PartBrief"
+                }
+              ],
+              "title": "Part"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "supplier_part_detail": {
+          "anyOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/SupplierPart"
+                }
+              ],
+              "title": "Supplier Part"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tests": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/StockItemTestResult"
+          }
+        }
+      },
+      "required": [
+        "barcode_hash",
+        "in_stock",
+        "part",
+        "pk",
+        "quantity"
+      ]
+    },
+    "Status2a7Enum": {
+      "enum": [
+        10,
+        50,
+        55,
+        60,
+        65,
+        70,
+        75,
+        85
+      ],
+      "type": "integer",
+      "description": "* `10` - OK\n* `50` - Attention needed\n* `55` - Damaged\n* `60` - Destroyed\n* `65` - Rejected\n* `70` - Lost\n* `75` - Quarantined\n* `85` - Returned\n\nAdditional custom status keys may be retrieved from the 'stock_status_retrieve' call.\n\n* `10` - OK\n* `50` - Attention needed\n* `55` - Damaged\n* `60` - Destroyed\n* `65` - Rejected\n* `70` - Lost\n* `75` - Quarantined\n* `85` - Returned"
+    },
+    "StockItemDuplicateOptions": {
+      "type": "object",
+      "description": "Generic serializer for specifying copy options when duplicating a model instance.\n\nBuilds its fields dynamically at instantiation time so the same class can be\nreused for any model without subclassing.",
+      "properties": {
+        "original": {
+          "type": "integer",
+          "description": "Select instance to duplicate"
+        },
+        "copy_tests": {
+          "type": "boolean",
+          "default": false,
+          "title": "Copy Test Results",
+          "description": "Copy test results from the original stock item"
+        },
+        "copy_notes": {
+          "type": "boolean",
+          "default": true,
+          "description": "Copy notes from the original item"
+        }
+      },
+      "required": [
+        "original"
+      ]
+    },
+    "LocationBrief": {
+      "type": "object",
+      "description": "Provides a brief serializer for a StockLocation object.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name",
+          "maxLength": 100
+        },
+        "pathstring": {
+          "type": "string",
+          "title": "Path",
+          "description": "Path",
+          "maxLength": 250
+        }
+      },
+      "required": [
+        "name",
+        "pk"
+      ]
+    },
+    "TreePath": {
+      "type": "object",
+      "description": "Serializer field for representing a tree path.",
+      "properties": {
+        "pk": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "icon": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "pk"
+      ]
+    },
+    "PartBrief": {
+      "type": "object",
+      "description": "Serializer for Part (brief detail).",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "IPN": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Internal Part Number",
+          "maxLength": 100
+        },
+        "barcode_hash": {
+          "type": "string",
+          "description": "Unique hash of barcode data"
+        },
+        "category_default_location": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "default_location": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Where is this item normally stored?"
+        },
+        "default_expiry": {
+          "type": "integer",
+          "maximum": 9223372036854776000,
+          "minimum": 0,
+          "format": "int64",
+          "description": "Expiry time (in days) for stock items of this part"
+        },
+        "name": {
+          "type": "string",
+          "description": "Part name",
+          "maxLength": 100
+        },
+        "revision": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": "",
+          "maxLength": 100
+        },
+        "full_name": {
+          "type": "string",
+          "description": "Format a 'full name' for this Part based on the format PART_NAME_FORMAT defined in InvenTree settings."
+        },
+        "description": {
+          "type": "string",
+          "description": "Part description (optional)",
+          "maxLength": 250
+        },
+        "image": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "thumbnail": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Is this part active?"
+        },
+        "locked": {
+          "type": "boolean",
+          "description": "Locked parts cannot be edited"
+        },
+        "assembly": {
+          "type": "boolean",
+          "description": "Can this part be built from other parts?"
+        },
+        "component": {
+          "type": "boolean",
+          "description": "Can this part be used to build other parts?"
+        },
+        "minimum_stock": {
+          "type": "string",
+          "format": "decimal",
+          "pattern": "^-?\\d{0,13}(?:\\.\\d{0,6})?$",
+          "description": "Minimum allowed stock level"
+        },
+        "is_template": {
+          "type": "boolean",
+          "description": "Is this part a template part?"
+        },
+        "purchaseable": {
+          "type": "boolean",
+          "description": "Can this part be purchased from external suppliers?"
+        },
+        "salable": {
+          "type": "boolean",
+          "description": "Can this part be sold to customers?"
+        },
+        "testable": {
+          "type": "boolean",
+          "description": "Can this part have test results recorded against it?"
+        },
+        "trackable": {
+          "type": "boolean",
+          "description": "Does this part have tracking for unique items?"
+        },
+        "virtual": {
+          "type": "boolean",
+          "description": "Is this a virtual part, such as a software product or license?"
+        },
+        "consumable": {
+          "type": "boolean",
+          "description": "Is this part consumable, such as glue or a fastener?"
+        },
+        "units": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Units of measure for this part",
+          "maxLength": 20
+        },
+        "pricing_min": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "decimal",
+          "pattern": "^-?\\d{0,13}(?:\\.\\d{0,6})?$"
+        },
+        "pricing_max": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "decimal",
+          "pattern": "^-?\\d{0,13}(?:\\.\\d{0,6})?$"
+        }
+      },
+      "required": [
+        "barcode_hash",
+        "full_name",
+        "name",
+        "pk",
+        "thumbnail"
+      ]
+    },
+    "SupplierPart": {
+      "type": "object",
+      "description": "Serializer for SupplierPart object.",
+      "properties": {
+        "available": {
+          "type": "number",
+          "format": "double"
+        },
+        "availability_updated": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Date of last update of availability data"
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Supplier part description",
+          "maxLength": 250
+        },
+        "duplicate": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/SupplierPartDuplicateOptions"
+            }
+          ],
+          "title": "Duplication Options",
+          "description": "Specify options for duplicating this item"
+        },
+        "in_stock": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "double"
+        },
+        "on_order": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "double"
+        },
+        "link": {
+          "anyOf": [
+            {
+              "description": "URL for external supplier part link",
+              "oneOf": [
+                {
+                  "type": "string",
+                  "format": "uri",
+                  "maxLength": 2000
+                },
+                {
+                  "type": "string",
+                  "maxLength": 0
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Is this supplier part active?"
+        },
+        "primary": {
+          "type": "boolean",
+          "description": "Is this the primary supplier part for the linked Part?"
+        },
+        "manufacturer_detail": {
+          "anyOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/CompanyBrief"
+                }
+              ],
+              "title": "Manufacturer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "manufacturer_part": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Select manufacturer part"
+        },
+        "manufacturer_part_detail": {
+          "anyOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/ManufacturerPart"
+                }
+              ],
+              "title": "Manufacturer Part"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "MPN": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Notes",
+          "maxLength": 100
+        },
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "barcode_hash": {
+          "type": "string",
+          "description": "Unique hash of barcode data"
+        },
+        "packaging": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Part packaging",
+          "maxLength": 50
+        },
+        "pack_quantity": {
+          "type": "string",
+          "description": "Total quantity supplied in a single pack. Leave empty for single items.",
+          "maxLength": 25
+        },
+        "pack_quantity_native": {
+          "type": "number",
+          "format": "double"
+        },
+        "part": {
+          "type": "integer",
+          "title": "Base Part",
+          "description": "Select part"
+        },
+        "pretty_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "SKU": {
+          "type": "string",
+          "description": "Supplier stock keeping unit",
+          "maxLength": 100
+        },
+        "supplier": {
+          "type": "integer"
+        },
+        "supplier_detail": {
+          "anyOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/CompanyBrief"
+                }
+              ],
+              "title": "Supplier"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "updated": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "part_detail": {
+          "anyOf": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/PartBrief"
+                }
+              ],
+              "title": "Part"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "price_breaks": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/SupplierPriceBreakBrief"
+          }
+        },
+        "parameters": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/Parameter"
+          }
+        }
+      },
+      "required": [
+        "SKU",
+        "barcode_hash",
+        "pack_quantity_native",
+        "part",
+        "pk",
+        "supplier"
+      ]
+    },
+    "StockItemTestResult": {
+      "type": "object",
+      "description": "Serializer for the StockItemTestResult model.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "stock_item": {
+          "type": "integer"
+        },
+        "result": {
+          "type": "boolean",
+          "description": "Test result"
+        },
+        "value": {
+          "type": "string",
+          "description": "Test output value",
+          "maxLength": 500
+        },
+        "attachment": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri",
+          "description": "Test result attachment"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Test notes",
+          "maxLength": 500
+        },
+        "test_station": {
+          "type": "string",
+          "description": "The identifier of the test station where the test was performed",
+          "maxLength": 500
+        },
+        "started_datetime": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "title": "Started",
+          "description": "The timestamp of the test start"
+        },
+        "finished_datetime": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "title": "Finished",
+          "description": "The timestamp of the test finish"
+        },
+        "user": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "user_detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/User"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "template": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "title": "Test template for this result",
+          "description": "Template"
+        },
+        "template_detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PartTestTemplate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "date",
+        "pk",
+        "stock_item"
+      ]
+    },
+    "SupplierPartDuplicateOptions": {
+      "type": "object",
+      "description": "Generic serializer for specifying copy options when duplicating a model instance.\n\nBuilds its fields dynamically at instantiation time so the same class can be\nreused for any model without subclassing.",
+      "properties": {
+        "original": {
+          "type": "integer",
+          "description": "Select instance to duplicate"
+        },
+        "copy_parameters": {
+          "type": "boolean",
+          "default": true,
+          "description": "Copy parameters from the original item"
+        },
+        "copy_notes": {
+          "type": "boolean",
+          "default": true,
+          "description": "Copy notes from the original item"
+        }
+      },
+      "required": [
+        "original"
+      ]
+    },
+    "CompanyBrief": {
+      "type": "object",
+      "description": "Serializer for Company object (limited detail).",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Is this company active?"
+        },
+        "name": {
+          "type": "string",
+          "title": "Company name",
+          "description": "Company name",
+          "maxLength": 100
+        },
+        "description": {
+          "type": "string",
+          "title": "Company description",
+          "description": "Description of the company",
+          "maxLength": 500
+        },
+        "image": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "thumbnail": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string",
+          "description": "Default currency used for this company"
+        },
+        "tax_id": {
+          "type": "string",
+          "description": "Company Tax ID",
+          "maxLength": 50
+        }
+      },
+      "required": [
+        "currency",
+        "name",
+        "pk",
+        "thumbnail"
+      ]
+    },
+    "ManufacturerPart": {
+      "type": "object",
+      "description": "Serializer for ManufacturerPart object.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "part": {
+          "type": "integer",
+          "title": "Base Part",
+          "description": "Select part"
+        },
+        "part_detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PartBrief"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pretty_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "manufacturer": {
+          "type": "integer"
+        },
+        "manufacturer_detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CompanyBrief"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Manufacturer part description",
+          "maxLength": 250
+        },
+        "duplicate": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ManufacturerPartDuplicateOptions"
+            }
+          ],
+          "title": "Duplication Options",
+          "description": "Specify options for duplicating this item"
+        },
+        "MPN": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Manufacturer Part Number",
+          "maxLength": 100
+        },
+        "link": {
+          "anyOf": [
+            {
+              "description": "URL for external manufacturer part link",
+              "oneOf": [
+                {
+                  "type": "string",
+                  "format": "uri",
+                  "maxLength": 2000
+                },
+                {
+                  "type": "string",
+                  "maxLength": 0
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "barcode_hash": {
+          "type": "string",
+          "description": "Unique hash of barcode data",
+          "maxLength": 128
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parameters": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/Parameter"
+          }
+        }
+      },
+      "required": [
+        "manufacturer",
+        "part",
+        "pk"
+      ]
+    },
+    "SupplierPriceBreakBrief": {
+      "type": "object",
+      "description": "Brief serializer for SupplierPriceBreak object.\n\nUsed to provide a list of price breaks against the SupplierPart object.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "part": {
+          "type": "integer"
+        },
+        "quantity": {
+          "type": "number",
+          "format": "double"
+        },
+        "price": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "decimal",
+          "pattern": "^-?\\d{0,13}(?:\\.\\d{0,6})?$"
+        },
+        "price_currency": {
+          "type": "string",
+          "title": "Currency",
+          "description": "Select currency from available options\n\n* `AUD` - AUD - Australian Dollar\n* `CAD` - CAD - Canadian Dollar\n* `CNY` - CNY - Chinese Yuan\n* `EUR` - EUR - Euro\n* `GBP` - GBP - British Pound\n* `JPY` - JPY - Japanese Yen\n* `NZD` - NZD - New Zealand Dollar\n* `USD` - USD - US Dollar\n\nOther valid currencies may be found in the 'CURRENCY_CODES' global setting."
+        },
+        "supplier": {
+          "type": "integer"
+        },
+        "updated": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Timestamp of last update"
+        }
+      },
+      "required": [
+        "part",
+        "pk",
+        "price",
+        "quantity",
+        "supplier"
+      ]
+    },
+    "Parameter": {
+      "type": "object",
+      "description": "Serializer for the Parameter model.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "template": {
+          "type": "integer",
+          "description": "Parameter template"
+        },
+        "model_type": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ModelTypeD42Enum"
+            }
+          ],
+          "default": ""
+        },
+        "model_id": {
+          "type": "integer",
+          "maximum": 9223372036854776000,
+          "minimum": 0,
+          "format": "int64",
+          "description": "ID of the target model for this parameter"
+        },
+        "data": {
+          "type": "string",
+          "description": "Parameter Value",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "data_numeric": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "double"
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional note field",
+          "maxLength": 500
+        },
+        "updated": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Timestamp of last update"
+        },
+        "updated_by": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "title": "Update By",
+          "description": "User who last updated this object"
+        },
+        "template_detail": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ParameterTemplate"
+            }
+          ]
+        },
+        "updated_by_detail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/User"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "data",
+        "model_id",
+        "pk",
+        "template",
+        "template_detail"
+      ]
+    },
+    "User": {
+      "type": "object",
+      "description": "Serializer for a User.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "username": {
+          "type": "string",
+          "description": "Username"
+        },
+        "first_name": {
+          "type": "string",
+          "description": "First name of the user"
+        },
+        "last_name": {
+          "type": "string",
+          "description": "Last name of the user"
+        },
+        "email": {
+          "description": "Email address of the user",
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "email"
+            },
+            {
+              "type": "string",
+              "maxLength": 0
+            }
+          ]
+        }
+      },
+      "required": [
+        "email",
+        "first_name",
+        "last_name",
+        "pk",
+        "username"
+      ]
+    },
+    "PartTestTemplate": {
+      "type": "object",
+      "description": "Serializer for the PartTestTemplate class.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "key": {
+          "type": "string"
+        },
+        "part": {
+          "type": "integer"
+        },
+        "test_name": {
+          "type": "string",
+          "description": "Enter a name for the test",
+          "maxLength": 100
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "title": "Test Description",
+          "description": "Enter description for this test",
+          "maxLength": 100
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Is this test enabled?"
+        },
+        "required": {
+          "type": "boolean",
+          "description": "Is this test required to pass?"
+        },
+        "requires_value": {
+          "type": "boolean",
+          "description": "Does this test require a value when adding a test result?"
+        },
+        "requires_attachment": {
+          "type": "boolean",
+          "description": "Does this test require a file attachment when adding a test result?"
+        },
+        "results": {
+          "type": "integer",
+          "description": "Number of results recorded against this template"
+        },
+        "choices": {
+          "type": "string",
+          "description": "Valid choices for this test (comma-separated)",
+          "maxLength": 5000
+        }
+      },
+      "required": [
+        "key",
+        "part",
+        "pk",
+        "results",
+        "test_name"
+      ]
+    },
+    "ManufacturerPartDuplicateOptions": {
+      "type": "object",
+      "description": "Generic serializer for specifying copy options when duplicating a model instance.\n\nBuilds its fields dynamically at instantiation time so the same class can be\nreused for any model without subclassing.",
+      "properties": {
+        "original": {
+          "type": "integer",
+          "description": "Select instance to duplicate"
+        },
+        "copy_parameters": {
+          "type": "boolean",
+          "default": true,
+          "description": "Copy parameters from the original item"
+        },
+        "copy_notes": {
+          "type": "boolean",
+          "default": true,
+          "description": "Copy notes from the original item"
+        }
+      },
+      "required": [
+        "original"
+      ]
+    },
+    "ModelTypeD42Enum": {
+      "enum": [
+        "build.build",
+        "company.company",
+        "company.manufacturerpart",
+        "company.supplierpart",
+        "order.purchaseorder",
+        "order.returnorder",
+        "order.salesorder",
+        "order.salesordershipment",
+        "order.transferorder",
+        "part.part",
+        "part.partcategory",
+        "stock.stocklocation"
+      ],
+      "type": "string",
+      "description": "* `build.build` - Build Order\n* `company.company` - Company\n* `company.manufacturerpart` - Manufacturer Part\n* `company.supplierpart` - Supplier Part\n* `order.purchaseorder` - Purchase Order\n* `order.returnorder` - Return Order\n* `order.salesorder` - Sales Order\n* `order.salesordershipment` - Sales Order Shipment\n* `order.transferorder` - Transfer Order\n* `part.part` - Part\n* `part.partcategory` - Part Category\n* `stock.stocklocation` - Stock Location"
+    },
+    "ParameterTemplate": {
+      "type": "object",
+      "description": "Serializer for the ParameterTemplate model.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Parameter Name",
+          "maxLength": 100
+        },
+        "units": {
+          "type": "string",
+          "description": "Physical units for this parameter",
+          "maxLength": 25
+        },
+        "description": {
+          "type": "string",
+          "description": "Parameter description",
+          "maxLength": 250
+        },
+        "model_type": {
+          "anyOf": [
+            {
+              "default": "",
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/ModelTypeD42Enum"
+                },
+                {
+                  "$ref": "#/$defs/BlankEnum"
+                },
+                {
+                  "$ref": "#/$defs/NullEnum"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "checkbox": {
+          "type": "boolean",
+          "description": "Is this parameter a checkbox?"
+        },
+        "choices": {
+          "type": "string",
+          "description": "Valid choices for this parameter (comma-separated)",
+          "maxLength": 5000
+        },
+        "selectionlist": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "title": "Selection List",
+          "description": "Selection list for this parameter"
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Is this parameter template enabled?"
+        },
+        "unique": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/UniqueEnum"
+            }
+          ],
+          "title": "Uniqueness",
+          "description": "Enforce uniqueness of linked parameter values against this template\n\n* `0` - No uniqueness required\n* `1` - Unique for model type\n* `2` - Globally unique",
+          "minimum": 0,
+          "maximum": 9223372036854776000
+        }
+      },
+      "required": [
+        "name",
+        "pk"
+      ]
+    },
+    "BlankEnum": {
+      "enum": [
+        ""
+      ]
+    },
+    "NullEnum": {
+      "enum": [
+        null
+      ]
+    },
+    "UniqueEnum": {
+      "enum": [
+        0,
+        1,
+        2
+      ],
+      "type": "integer",
+      "description": "* `0` - No uniqueness required\n* `1` - Unique for model type\n* `2` - Globally unique"
+    }
+  }
+}

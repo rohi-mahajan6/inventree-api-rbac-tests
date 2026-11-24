@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Secrets and local config
+.env
+.env.*
+!.env.example
+
+# Test output (uploaded as CI artifacts, never committed)
+results/
+test-results/
+playwright-report/
+site/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log

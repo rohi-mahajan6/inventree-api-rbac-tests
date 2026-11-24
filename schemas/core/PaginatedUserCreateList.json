@@ -1,0 +1,364 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PaginatedUserCreateList",
+  "type": "object",
+  "required": [
+    "count",
+    "results"
+  ],
+  "properties": {
+    "count": {
+      "type": "integer"
+    },
+    "next": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    },
+    "previous": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/UserCreate"
+      }
+    }
+  },
+  "$defs": {
+    "UserCreate": {
+      "type": "object",
+      "description": "Serializer for creating a new User.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "username": {
+          "type": "string",
+          "description": "Username"
+        },
+        "first_name": {
+          "type": "string",
+          "description": "First name of the user"
+        },
+        "last_name": {
+          "type": "string",
+          "description": "Last name of the user"
+        },
+        "email": {
+          "description": "Email address of the user",
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "email"
+            },
+            {
+              "type": "string",
+              "maxLength": 0
+            }
+          ]
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Group"
+          }
+        },
+        "group_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "is_staff": {
+          "type": "boolean",
+          "title": "Administrator",
+          "description": "Does this user have administrative permissions"
+        },
+        "is_superuser": {
+          "type": "boolean",
+          "title": "Superuser",
+          "description": "Is this user a superuser"
+        },
+        "is_active": {
+          "type": "boolean",
+          "title": "Active",
+          "description": "Is this user account active"
+        },
+        "profile": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/BriefUserProfile"
+            }
+          ]
+        },
+        "tips": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "description": "Return the user's known tip results, creating missing records first."
+        }
+      },
+      "required": [
+        "email",
+        "first_name",
+        "groups",
+        "last_name",
+        "pk",
+        "profile",
+        "tips",
+        "username"
+      ]
+    },
+    "Group": {
+      "type": "object",
+      "description": "Serializer for a 'Group'.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 150
+        },
+        "permissions": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {},
+          "description": "Return a list of permissions associated with the group."
+        },
+        "roles": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/RuleSet"
+          }
+        },
+        "users": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/User"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "pk"
+      ]
+    },
+    "BriefUserProfile": {
+      "type": "object",
+      "description": "Brief serializer for the UserProfile model.",
+      "properties": {
+        "displayname": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "title": "Display Name",
+          "description": "Chosen display name for the user",
+          "maxLength": 255
+        },
+        "position": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Main job title or position",
+          "maxLength": 255
+        },
+        "status": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "User status message",
+          "maxLength": 2000
+        },
+        "location": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "User location information",
+          "maxLength": 2000
+        },
+        "active": {
+          "type": "boolean",
+          "description": "User is actively using the system"
+        },
+        "contact": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Preferred contact information for the user",
+          "maxLength": 255
+        },
+        "type": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/UserTypeEnum"
+            }
+          ],
+          "title": "User Type",
+          "description": "Which type of user is this?\n\n* `bot` - Bot\n* `internal` - Internal\n* `external` - External\n* `guest` - Guest"
+        },
+        "organisation": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Users primary organisation/affiliation",
+          "maxLength": 255
+        },
+        "primary_group": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Primary group for the user"
+        }
+      }
+    },
+    "RuleSet": {
+      "type": "object",
+      "description": "Serializer for a RuleSet.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "name": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/NameEnum"
+            }
+          ],
+          "description": "Permission set\n\n* `admin` - Admin\n* `part_category` - Part Categories\n* `part` - Parts\n* `pricing` - Pricing\n* `bom` - Bills of Material\n* `stock_location` - Stock Locations\n* `stock` - Stock Items\n* `build` - Build Orders\n* `purchase_order` - Purchase Orders\n* `sales_order` - Sales Orders\n* `return_order` - Return Orders\n* `transfer_order` - Transfer Orders"
+        },
+        "label": {
+          "type": "string",
+          "description": "Return the translated label for this ruleset."
+        },
+        "group": {
+          "type": "integer",
+          "description": "Group"
+        },
+        "can_view": {
+          "type": "boolean",
+          "title": "View",
+          "description": "Permission to view items"
+        },
+        "can_add": {
+          "type": "boolean",
+          "title": "Add",
+          "description": "Permission to add items"
+        },
+        "can_change": {
+          "type": "boolean",
+          "title": "Change",
+          "description": "Permissions to edit items"
+        },
+        "can_delete": {
+          "type": "boolean",
+          "title": "Delete",
+          "description": "Permission to delete items"
+        }
+      },
+      "required": [
+        "group",
+        "label",
+        "name",
+        "pk"
+      ]
+    },
+    "User": {
+      "type": "object",
+      "description": "Serializer for a User.",
+      "properties": {
+        "pk": {
+          "type": "integer",
+          "title": "ID"
+        },
+        "username": {
+          "type": "string",
+          "description": "Username"
+        },
+        "first_name": {
+          "type": "string",
+          "description": "First name of the user"
+        },
+        "last_name": {
+          "type": "string",
+          "description": "Last name of the user"
+        },
+        "email": {
+          "description": "Email address of the user",
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "email"
+            },
+            {
+              "type": "string",
+              "maxLength": 0
+            }
+          ]
+        }
+      },
+      "required": [
+        "email",
+        "first_name",
+        "last_name",
+        "pk",
+        "username"
+      ]
+    },
+    "UserTypeEnum": {
+      "enum": [
+        "bot",
+        "internal",
+        "external",
+        "guest"
+      ],
+      "type": "string",
+      "description": "* `bot` - Bot\n* `internal` - Internal\n* `external` - External\n* `guest` - Guest"
+    },
+    "NameEnum": {
+      "enum": [
+        "admin",
+        "part_category",
+        "part",
+        "pricing",
+        "bom",
+        "stock_location",
+        "stock",
+        "build",
+        "purchase_order",
+        "sales_order",
+        "return_order",
+        "transfer_order"
+      ],
+      "type": "string",
+      "description": "* `admin` - Admin\n* `part_category` - Part Categories\n* `part` - Parts\n* `pricing` - Pricing\n* `bom` - Bills of Material\n* `stock_location` - Stock Locations\n* `stock` - Stock Items\n* `build` - Build Orders\n* `purchase_order` - Purchase Orders\n* `sales_order` - Sales Orders\n* `return_order` - Return Orders\n* `transfer_order` - Transfer Orders"
+    }
+  }
+}
